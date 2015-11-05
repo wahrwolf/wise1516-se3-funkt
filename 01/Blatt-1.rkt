@@ -1,0 +1,86 @@
+ #lang racket
+;Autoren:
+; Katja Möhring
+; Vincent Dahmen
+
+ ;Aufgabe 1.1
+  (define (deg2rad degree)
+    (* degree (/ 180 pi)))
+  
+  (define (rad2deg radiant)
+    (/ (* pi radiant) 180))
+  
+  ;Aufgabe 1.2
+  (define (my-acos cosinus)
+    (atan (/ (findesin cosinus) cosinus)))
+  
+  (define (findesin cosinus)
+    (sqrt (- 1 (* cosinus cosinus))))
+  
+  ;Aufgabe 1.3
+  (define (nmtokm nmeilen)
+    (* nmeilen 1.851))
+
+;Hilfsfunktion zur Zwischenrechnung (gegebene Formel)
+(define (kreisdistanz geobreiteA geolaengeA geobreiteB geolaengeB)
+  (my-acos
+   (+
+    (*
+     (sin (deg2rad geobreiteA))
+     (sin (deg2rad geobreiteB)))
+    (*
+     (cos (deg2rad geobreiteA))
+     (cos (deg2rad geobreiteB))
+     (cos (deg2rad (- geolaengeB geolaengeA)))
+))))
+
+
+;Eingabe von W- und S-Graden als negative Werte
+(define (distanzAB geobreiteA geolaengeA geobreiteB geolaengeB)
+  (nmtokm (*
+           (rad2deg (kreisdistanz geobreiteA geolaengeA geobreiteB geolaengeB))
+           60)))
+
+;Hier die Ergebnisse der Rechnungen ...
+;Oslo->Hongkong: 8589.41km, Kurswinkel: 67.44Grad
+;San Francisco->Honolulu: 3844.69km Kurswinkel: 251.78Grad
+;Osterinsel->Lima: 3757.62km Kurswinkel: 70.07Grad
+
+;Aufgabe 2.2 Anfangskurs
+(define (anfangskurs geobreiteA geolaengeA geobreiteB geolaengeB)
+  ;Ermitteln des Kurswinkels per gegebener Formel
+  (define kurswinkel
+    (rad2deg
+     (my-acos
+      (/
+       (-
+        (sin (deg2rad geobreiteB))
+        (*
+         (cos (kreisdistanz geobreiteA geolaengeA geobreiteB geolaengeB))
+         (sin (deg2rad geobreiteA))))
+       (*
+        (cos (deg2rad geobreiteA))
+        (sin (kreisdistanz geobreiteA geolaengeA geobreiteB geolaengeB))
+)))))
+  ;Anpassen des Kurswinkels auf oestlichen/westlichen Kurs
+  (if (< geolaengeB geolaengeA) (- 360 kurswinkel) (+ kurswinkel)))
+
+;Aufgabe 2.3 Himmelsrichtungen
+;2.3.1
+;Liste der Himmelsrichtungen, auf die per Index zugegriffen werden kann
+(define Himmelsrichtungen (list 'N 'NNE 'NE 'ENE 'E 'ESE 'SE 'SSE 'S 'SSW 'SW 'WSW 'W 'WNW 'NW 'NNW))
+
+;Umwandeln einer Gradzahl in die entsprechende Himmelsrichtung, indem die Grad in einen Index umgewandelt werden
+(define (deg2richtung grad)
+  (list-ref Himmelsrichtungen (if(< grad 348.75) (inexact->exact(round (/ grad 22.5))) (+ 0))))
+
+;2.3.2
+;Index eines Listenelements ermitteln
+(define (getIndex mylist listitem)
+  (if (equal? listitem (first mylist))
+      (+ 0)
+      (+ 1 (getIndex (rest mylist) listitem))))
+
+;Per Index die Himmelsrichtung in Grad umwandeln
+(define (richtung2deg himmelsrichtung)
+  (* (getIndex Himmelsrichtungen himmelsrichtung) 22.5))

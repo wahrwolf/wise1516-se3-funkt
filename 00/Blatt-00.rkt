@@ -34,8 +34,7 @@
 	3000
 	0.02
 )
-;Definition Zinseszins-Funktion
-(define (zzins(k z j)
-              (if(>(j 0)
-                   
-                  
+;Definition einer Funktion
+(define (zinsen(start satz dauer)
+
+
