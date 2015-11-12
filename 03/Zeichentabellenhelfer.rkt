@@ -37,10 +37,10 @@
    (not (null? Charlist))
    { charlist->symbolseq_helper
      (cdr Charlist)
-     (append Symbolseq (list (char->symbol (car Charlist) Tabelle) ) )
+     (cons Symbolseq  (char->symbol (car Charlist) Tabelle) ) 
      Tabelle
     }
-   Symbolseq
+   (reverse Symbolseq)
    ]
 }
 
