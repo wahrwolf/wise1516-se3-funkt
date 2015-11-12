@@ -17,7 +17,7 @@
   (cond
     [
      ;; Prüfe ob Schlüssel vorhanden und gib ihn zurück
-     (cdr (assoc Key Tabelle))
+     (assoc Key Tabelle)
      (cdr (assoc Key Tabelle))
     ]
     ;; Wenn nicht vorhanden gibt 'NOT_DEFINED zurück
