@@ -29,5 +29,15 @@
 
 ;;; Aufgabe 2.2
 
-(define (Notmeldung Schiffsname Rufzeichen Position advDes)
+(define (Schiffsname Rufzeichen Position advDes)
+  (string-append (Ueberschrift Schiffsname Rufzeichen) Position advDes (Peilzeichen) (Unterschrift Schiffsname Rufzeichen) "OVER")
 ) 
+
+(define (Ueberschrift Schiffsname Rufzeichen)
+  (string-append 
+
+
+
+;;; found at rosettacode.org/Repeat_a_string		 
+(define (string-repeat n str)
+  (string-append (make-list n str)))
