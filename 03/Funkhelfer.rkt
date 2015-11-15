@@ -35,3 +35,6 @@
 (provide nocase-char->funk)
 (provide char->funk)
 (provide string->funkseq)
+
+(define (string->funkstring String)
+  (string-append (map symbol->string (string->funkseq String))))

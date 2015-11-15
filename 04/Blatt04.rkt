@@ -1,3 +1,4 @@
+#lang racket
 ;; Aufgabe 1.0
 
 
@@ -7,8 +8,8 @@
 
 ;;; Aufgabe 2.1
 
-;;; <Notmeldung>		::= <Überschrift> <Standort> <Notfallbeschreibung> <Peilzeichen> <Unterschrift> "OVER"
-;;; <Überschrift>		::= <'MAYDAY> <'Hier_Ist> <'Schiffsname> <Rufzeichen> <Notzeichen>
+;;; <Notmeldung>		::= <Ueberschrift> <Standort> <Notfallbeschreibung> <Peilzeichen> <Unterschrift> "OVER"
+;;; <Ueberschrift>		::= <'MAYDAY> <'Hier_Ist> <'Schiffsname> <Rufzeichen> <Notzeichen>
 ;;; <Unterschrift>		::= <Schiffsname> <Rufzeichen>
 ;;; <Notzeichen>		::= "MAYDAY" <Schiffsname> <'Schiffsname> <Rufzeichen>
 ;;; <Standort>			::= <Zone> <Ostwert> <Nordwert>
@@ -28,13 +29,38 @@
 ;;; <Nordwert>
 
 ;;; Aufgabe 2.2
+(require "../03/Funkhelfer.rkt")
 
 (define (Schiffsname Rufzeichen Position advDes)
-  (string-append (Ueberschrift Schiffsname Rufzeichen) Position advDes (Peilzeichen) (Unterschrift Schiffsname Rufzeichen) "OVER")
+  (string-append 
+	(Ueberschrift Schiffsname Rufzeichen) 
+   Position 
+   advDes 
+	(Peilzeichen) 
+	(Unterschrift Schiffsname Rufzeichen) 
+   "OVER")
 ) 
 
 (define (Ueberschrift Schiffsname Rufzeichen)
   (string-append 
+	(string-repeat "MAYDAY" 3)
+	(symbol->string (string->funkseq "DE"))
+	(symbol->string (string->funkseq Schiffsname))
+	(symbol->string (string->funkseq Rufzeichen))
+	(Notzeichen Schiffsname Rufzeichen)
+))
+
+(define (Notzeichen Schiffsname Rufzeichen)
+ (string-append
+   "MAYDAY"
+   Schiffsname
+	(symbol->string (string->funkseq Schiffsname))
+	(symbol->string (string->funkseq Rufzeichen))
+))
+
+(define (Peilzeichen)
+	"ICH SENDE DEN TRAEGER --"
+)
 
 
 

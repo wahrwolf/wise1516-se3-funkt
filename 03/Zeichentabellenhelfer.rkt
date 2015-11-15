@@ -37,7 +37,7 @@
    (not (null? Charlist))
    { charlist->symbolseq_helper
      (cdr Charlist)
-     (cons Symbolseq  (char->symbol (car Charlist) Tabelle) ) 
+     (cons (char->symbol (car Charlist) Tabelle) Symbolseq) 
      Tabelle
     }
    (reverse Symbolseq)
