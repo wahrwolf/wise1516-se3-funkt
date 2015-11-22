@@ -19,7 +19,7 @@
 ;
 ; Mit der richtigen Datenstruktur können wir den Phenotyp schnell rekursiv mit dem Genotyp vergleichen:
 ; 	for i=0 to dna.len
-; 		if is_dominant(pheno[i]) 
+; 		if is_more_dominant(pheno[i]) 
 ; 			if geno[i][0] != pheno[i] || geno[i][1] != pheno[i] return false 
 ; 		else
 ; 			if pheno[i]!=geno[i][0] return false
@@ -51,6 +51,10 @@
 ; 
 ; Die Idee dahinter ist das jedes Merkmal 2 Eigenschaften enhält.
 ; Da wir nicht auf die Reihenfolge angwiesen sein wollen fügen wir einen weiteren Platz für einen Namen ein.
-;
-;
+; Die Notation mit listen hat außerdem den Vorteil dass man schnell auch rekursiv drauf zu greifen kann.
 ; 
+; Das Dominanz Verhalten unter Eigenschaften speicher wir auch als Liste.
+; Dabei hat das erste Element der Liste die höchste Dominanz.
+; Durch diesen Aufbau können wir bei zwei Eigenschaften schnell prüfen, welche Eigenschaft dominanter ist.
+; Außerdem lassen sich einfach neue Eigenschaften einfügen oder die Reihenfolge ändern.
+
