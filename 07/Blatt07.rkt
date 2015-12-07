@@ -111,25 +111,25 @@
 ; ##############  2.3  #################
 ;scaliert die Punkte so dass die genau in den 800x600 Block passen und ruft helper auf
 (define (draw-points pointlist)
-  (draw-points_h (rescale2d pointlist (cons 1 799)(cons 1 599))))
+  (draw-points_h (rescale2d pointlist (cons 0 800)(cons 0 600))))
 
-; mal Punkt für Punkt auf scharzes Rechteck
+; mal Punkt für Punkt auf weißem Rechteck
 (define (draw-points_h pointlist)
   (if (null? pointlist)
-      (rectangle 800 600 "solid" "black")
+      (rectangle 800 600 "solid" "white")
       (place-image (ellipse 10 10 "solid" "blue")
-                   (car (car pointlist))
+                   (- 800 (car (car pointlist)))
                    (cdr (car pointlist))
                    (draw-points_h (cdr pointlist)))))
-  
+
 
 ; ##############  2.4  #################
 
 
 (define (plot-function func interval n)
-  (draw-points (function->points sqr interval n)))
+  (draw-points (function->points func interval n)))
 
 #| Tests
-(plot-function sqr (cons 0 100) 5)
+(plot-function sqr (cons 0 20) 5)
 
 |#
