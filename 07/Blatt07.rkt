@@ -111,21 +111,19 @@
 
 ; ##############  2.3  #################
 (define point (ellipse 10 10 "solid" "blue"))
-(define marked_point (ellipse 5 5 "solid" "red"))
 (define plot-scene (rectangle 800 600 "solid" "white"))
   
 ;scaliert die Punkte so dass die genau in den 800x600 Block passen und ruft helper auf
 (define (draw-points pointlist)
-  (draw-points_h (rescale2d pointlist (cons 0 800)(cons 0 600)) '()))
+  (draw-points_h (make-list (length pointlist) point)(
+                  rescale2d pointlist (cons 0 800)(cons 0 600))))
 
 ; mal Punkt für Punkt auf weißem Rechteck
-(define (draw-points_h pointlist pos)      
-  (place-images (make-list (length pointlist) point)
+(define (draw-points_h  points pointlist)      
+  (place-images points
                 (map (lambda (a) (match a [(cons x y) (make-posn (- 800 x) y) ]))
                      pointlist)
                 plot-scene))
-
-(trace draw-points_h)
 
 ; ##############  2.4  #################
 
@@ -137,3 +135,19 @@
 (plot-function sqr (cons 0 20) 5)
 
 |#
+; ##############  2.5  #################
+(define marked_point (ellipse 5 5 "solid" "red"))
+
+(define (mark-point n k)
+  (append (make-list (- (modulo (sqrt (sqr k)) (sqrt (sqr n))) 1) point)
+        (cons marked_point
+              (make-list (- n (modulo (sqrt (sqr k)) (sqrt (sqr n)))) point))))
+
+(define (live-plot-function func interval n t)
+  (live-draw-points (function->points func interval n) t ))
+
+(define (live-draw-points pointlist t)
+  (draw-points_h (mark-point (length pointlist) t)(
+                  rescale2d pointlist (cons 0 800)(cons 0 600))))
+
+(trace mark-point)
