@@ -1,5 +1,6 @@
 #lang racket
 (require racket/trace)
+(require 2htdp/image)
 
 (define (range-rec intervall n)
 	(if 
@@ -108,15 +109,27 @@
 |#
 
 ; ##############  2.3  #################
+;scaliert die Punkte so dass die genau in den 800x600 Block passen und ruft helper auf
+(define (draw-points pointlist)
+  (draw-points_h (rescale2d pointlist (cons 1 799)(cons 1 599))))
 
-; ---- Also ich hab immer noch die Nase voll von dem Zeichenprogramm...
+; mal Punkt für Punkt auf scharzes Rechteck
+(define (draw-points_h pointlist)
+  (if (null? pointlist)
+      (rectangle 800 600 "solid" "black")
+      (place-image (ellipse 10 10 "solid" "blue")
+                   (car (car pointlist))
+                   (cdr (car pointlist))
+                   (draw-points_h (cdr pointlist)))))
+  
 
 ; ##############  2.4  #################
 
-#| wenn wir nur die Funktion plot-function hätten...
-(die würde das rescaling 2d vornehmen)
 
 (define (plot-function func interval n)
-  (plot-function ((function->points sqr interval n)
+  (draw-points (function->points sqr interval n)))
+
+#| Tests
+(plot-function sqr (cons 0 100) 5)
 
 |#
