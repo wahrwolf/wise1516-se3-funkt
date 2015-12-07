@@ -1,5 +1,6 @@
 #lang racket
 (require racket/trace)
+(require lang/posn)
 (require 2htdp/image)
 
 (define (range-rec intervall n)
@@ -109,19 +110,22 @@
 |#
 
 ; ##############  2.3  #################
+(define point (ellipse 10 10 "solid" "blue"))
+(define marked_point (ellipse 5 5 "solid" "red"))
+(define plot-scene (rectangle 800 600 "solid" "white"))
+  
 ;scaliert die Punkte so dass die genau in den 800x600 Block passen und ruft helper auf
 (define (draw-points pointlist)
-  (draw-points_h (rescale2d pointlist (cons 0 800)(cons 0 600))))
+  (draw-points_h (rescale2d pointlist (cons 0 800)(cons 0 600)) '()))
 
 ; mal Punkt für Punkt auf weißem Rechteck
-(define (draw-points_h pointlist)
-  (if (null? pointlist)
-      (rectangle 800 600 "solid" "white")
-      (place-image (ellipse 10 10 "solid" "blue")
-                   (- 800 (car (car pointlist)))
-                   (cdr (car pointlist))
-                   (draw-points_h (cdr pointlist)))))
+(define (draw-points_h pointlist pos)      
+  (place-images (make-list (length pointlist) point)
+                (map (lambda (a) (match a [(cons x y) (make-posn (- 800 x) y) ]))
+                     pointlist)
+                plot-scene))
 
+(trace draw-points_h)
 
 ; ##############  2.4  #################
 
