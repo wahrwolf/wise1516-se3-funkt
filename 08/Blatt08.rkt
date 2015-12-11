@@ -54,7 +54,7 @@
 (require racket/set)
 
 ; 3.1
-
+; sortierte Liste irgendwie siehe absprachet :
 
 ; 3.3
 (define (is-a-set? xs ys zs)
