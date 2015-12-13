@@ -1,3 +1,5 @@
+#lang racket
+
 ; Aufgabe 1
 ; Alle Funktionen die eine Funktion als Parameter oder Ausgabe haben, sind Funktionen höherer Ordnung
 
@@ -54,19 +56,47 @@
 (require racket/set)
 
 ; 3.1
-; sortierte Liste irgendwie siehe absprachet :
+; 
+
+; 3.2
+;
+(require "setkarten-module.rkt")
+ 
+(define the-pattern '(waves oval rectangle))
+(define the-mode '(outline solid hatched))
+(define the-color '(red green blue))
+(define the-n '(1 2 3))
+
+(define (list->card xs)
+  (show-set-card (first xs) (second xs) (third xs) (fourth xs)))
+
+(define the-set (cartesian-product the-n the-pattern the-mode the-color))
 
 ; 3.3
 (define (is-a-set? xs ys zs)
-	(foldl and 
+	(foldl (lambda (a b) (and a b)) #t
 		(map (lambda (x y  z) 
-		(let (head (set x y z))
+		(let ([tripel (set x y z)])
 		 (or
-			(= (set-count head) 1)
-			(= (set-count head) 3)
+			(= (set-count tripel) 1)
+			(= (set-count tripel) 3)
 		 )))
 		xs ys zs)
 	)
 )
 
-; hello world
+; 3.4 (Bonus)
+(define (draw-cards card-set)
+	(take (shuffle card-set) 12))
+
+(define (play-set cardbase)
+	(list->set
+    (map (lambda (xs)
+               (let ([x (first xs)] [y (second xs)] [z (third xs)])
+                (if (and
+                    (= 3 (set-count (set x y z)))
+                    (is-a-set? x y z))
+                   (map list->card (list x y z))
+                   null)))
+             (let ([handcards (draw-cards cardbase)])
+             (cartesian-product handcards handcards handcards)))))
