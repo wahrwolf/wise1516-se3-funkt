@@ -47,11 +47,21 @@
 ; 	4 | 	 		| 
 ;-----------------------------------------------------------------------------------------
 
-; Aufbae 2
-; 1-> map
-; 2-> drop (siehe list funktionen)
-; foldl + drop + drop
+; Aufgabe 2
+; 1: führe die funktion sqr für alle elemente der Liste xs aus
+(define (list->sqr xs)
+  (map sqr xs))
 
+; 2: filtere alle Zahlen die nicht durch 3 teilbar sind heraus
+(define (list->3teilbar xs)
+  (filter (lambda (x) (= (modulo x 3) 0)) xs))
+
+; 3: Bilde die summe über die gefilterete Liste,
+(define (list->sum10 xs)
+  (foldl + 0 (filter (lambda (x) (and
+                                  (> x 10) ;die größer als 10
+                                (odd? x))) ;und ungerade sind
+                     xs)))
 ; Aufgabe 3:
 (require racket/set)
 
