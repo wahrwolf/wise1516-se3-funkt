@@ -119,14 +119,25 @@
 (define (draw-cards card-set)
 	(take (shuffle card-set) 12))
 
-(define (play-set cardbase)
-	(list->set ; filtere doppelte heraus
-    (map (lambda (xs)
+(define (get-sets handcards)
+    (filter (lambda (xs)
                (let ([x (first xs)] [y (second xs)] [z (third xs)])
-                (if (and ;ein set ist gefunden worden wenn
+                 (and ;ein set ist gefunden worden wenn
                     (= 3 (set-count (set x y z))) ; die drei vergleichenden karten unterschiedlich sind
                     (is-a-set? x y z)) ; und sie ein set sind
-                   (map list->card (list x y z)) ;wandle die Karten in Bilder um
-                   null)))
-             (let ([handcards (draw-cards cardbase)]) ; ziehe 12 Karten
-             (cartesian-product handcards handcards handcards))))) ; berechne sämtliche kombinationsmöglichkeiten
+                   ))
+             (cartesian-product handcards handcards handcards) ; berechne sämtliche kombinationsmöglichkeiten
+      ))
+
+(define (clean-sets sets)
+  ;entfernt doppelte elemente
+  ; zwei tripel sind identisch wenn mindestens zwei karten in beiden sets auftauchen
+  (remove-duplicates
+   (map (lambda (xs) (map list->card xs)) sets)
+                     (lambda (x y) 
+                       (> 4 (set-count (list->set
+                                        (list (first x) (second x) (third x)
+                                              (first y) (second y) (third x))))))))
+
+(define play-sets
+  (clean-sets (get-sets (draw-cards the-set))))
