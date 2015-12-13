@@ -1,36 +1,40 @@
 #lang racket
 
-; Aufgabe 1
+; Aufgabe 1.1
 ; Alle Funktionen die eine Funktion als Parameter oder Ausgabe haben, sind Funktionen höherer Ordnung
 
 
-; Aufgabe 2
+; Aufgabe 1.2
 ;  Aufgabe| höhere Ordnung 	| Begründug
 ;-----------------------------------------------------------------------------------------
 ; 	a | Ja 			| Erstes Argument is vom Typ #procedure also eine Funktion
 ;-----------------------------------------------------------------------------------------
 ; 	b | Ja 			| Rückgabe von car oder cdr, welches beide Funktionen sind
 ;-----------------------------------------------------------------------------------------
-; 	c | Ja 			| Im Aufruf von lambda wird der Parameter f als Funktion unifiziert,; 				    | also nimmt pepper eine Funktion als Parameter,
+; 	c | Ja 			| Im Aufruf von lambda wird der Parameter f als Funktion unifiziert,
+;        			    | also nimmt pepper eine Funktion als Parameter,
 ; 				| also ist pepper eine Funktion höherer Ordnung
 ;-----------------------------------------------------------------------------------------
 ; 	d | Nein 		| Die lezte Funktion (/) gibt eine Zahl zurück.
 ;-----------------------------------------------------------------------------------------
 
 
-; Aufgabe 3:
+; Aufgabe 1.3:
 
 ; Zunächst wird f an max gebunden
 ; Anschließend wird arg1 wird an 5 gebunden.
 ; Nun wird eine anonyme Funktion im Kontext von pepper instanziert.
 ; Diese kennt alle globalen Bindungen, sowie die lokalen Bindungen f und arg1.
+; Damit ist die Rückgabe der Funktion eine closure welche die anonyme Funktion
+; und die Bindungen der Variablen f und arg1 enthält
 
 
-; Aufgabe 4:
+; Aufgabe 1.4:
 ;-----------------------------------------------------------------------------------------
 ; Ausdruck| Rückgabewert 	| Begründug
 ;======================================================================================== 
-; 	1 | (/ 2 3) 		|  
+; 	1 | (/ 2 3) = (2/3)	|  foldl rechnet quasi ((2/x)/y) wobei x der Akkumulator ist
+;           			|  initialisiert mit 1. y ist das jeweils erste Listenelementg
 ; 				| > (/ 2 1 1) 
 ; 				| 2
 ; 				| > (/ 2 2 1)
@@ -40,12 +44,30 @@
 ; 				| > (/ 2 1 3)
 ; 				| 2/3
 ;-----------------------------------------------------------------------------------------
-; 	2 |  			| Rückgabe von car oder cdr, welches beide Funktionen sind
+; 	2 | '((1 . 1) (2 . 2) (3 . 3) (4 . 4))
+;                               | wendet cons auf alle Listenelemente mit jeweils gleichen
+;                               | Index an, dementsprechend werden hier die Tupel gebildet.
+;                               | Das Ergebnis von map ist immer ein Liste wo das Element
+;                               | mit index i dem entspricht was bei Anwendung der Funktion
+;                               | (hier cons) bei den i-ten Elementen heraus kommt.
 ;-----------------------------------------------------------------------------------------
-; 	3 |  			|
+; 	3 | '((a b) (()))	| filter durchsucht die Liste nach Elementen die ein Pair sind
+;                               | Ergebnis sind also alle Elemente der Liste auf die pair?
+; 	 	 		| true auswertet in einer Liste. 
 ;-----------------------------------------------------------------------------------------
-; 	4 | 	 		| 
+; 	4 | '(9941.0 212.0 32 33.8 1832.0 -459.66999999999996)
+;                               |wendet auf jedes Listenelement x die Hintereinanderausführung
+;                               | ((x * 1.8) +32) an
 ;-----------------------------------------------------------------------------------------
+
+; Aufgabe 1.5
+; die Funktion konvertiert Celsius zu Farenheit,
+; Umwandlung zurück:
+(define (farenheit->celcius list)
+  (map (lambda (x)
+         (/(- x 32)1.8))
+       list))
+
 
 ; Aufgabe 2
 ; 1: führe die funktion sqr für alle elemente der Liste xs aus
