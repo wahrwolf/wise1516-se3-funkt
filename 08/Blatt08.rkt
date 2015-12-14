@@ -62,7 +62,7 @@
 
 ; Aufgabe 1.5
 ; die Funktion konvertiert Celsius zu Farenheit,
-; Umwandlung zurück:
+; Umwandlung zurück: Element x-32, dann x/1.8
 (define (farenheit->celcius list)
   (map (lambda (x)
          (/(- x 32)1.8))
@@ -115,7 +115,7 @@
 (define the-n '(1 2 3))
 
 
-; die gesamte anzahl an möglichen Karten ist das car. Produkt der Eigenschaften
+; die gesamte anzahl an möglichen Karten ist das kartesische Produkt der Eigenschaften
 (define the-set (cartesian-product the-n the-pattern the-mode the-color))
 
 ; und ist natürlich auch als Liste von Bildern verfügbar
