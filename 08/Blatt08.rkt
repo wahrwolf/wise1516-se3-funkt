@@ -153,13 +153,11 @@
 
 (define (clean-sets sets)
   ;entfernt doppelte elemente
-  ; zwei tripel sind identisch wenn mindestens zwei karten in beiden sets auftauchen
+  ; zwei tripel sind identisch wenn das eine eine permutation des anderen istS
   (remove-duplicates
    (map (lambda (xs) (map list->card xs)) sets)
                      (lambda (x y) 
-                       (> 4 (set-count (list->set
-                                        (list (first x) (second x) (third x)
-                                              (first y) (second y) (third x))))))))
+                       (member y (permutations x)))))
 
 (define play-sets
   (clean-sets (get-sets (draw-cards the-set))))
